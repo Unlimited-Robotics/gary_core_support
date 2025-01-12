@@ -34,7 +34,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tests_page">
        <widget class="QStackedWidget" name="tests_stack_widget">
@@ -1263,6 +1263,11 @@
              </item>
              <item>
               <widget class="QLabel" name="states_chest_passfail">
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
                <property name="text">
                 <string>chest button pf</string>
                </property>
@@ -1380,24 +1385,6 @@
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
              <item>
-              <widget class="QPushButton" name="states_wheels_61_on">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Wheels 6.1v ON</string>
-               </property>
-              </widget>
-             </item>
-             <item>
               <widget class="QPushButton" name="states_wheels_61_off">
                <property name="maximumSize">
                 <size>
@@ -1412,6 +1399,24 @@
                </property>
                <property name="text">
                 <string>Wheels 6.1v OFF</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="states_wheels_61_on">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Wheels 6.1v ON</string>
                </property>
               </widget>
              </item>
