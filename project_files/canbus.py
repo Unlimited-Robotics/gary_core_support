@@ -160,6 +160,7 @@ class CANBusWorker(QObject):
                 if platform == "linux" or platform == "linux2" or platform == "unix":
                     bustype = 'socketcan'
                     self.bus1 = can.Bus(channel=channel, interface=bustype, baudrate=1000000)
+                    self.can_running1 = 1
                 elif "win" in platform:
                     self.update_label(self.bad_can_variables.general_messages_label, "NO CAN1 ON WINDOWS, no arms or linears available (relevant tests will run on can0)")
                 self.started_with_can_issue -= 1

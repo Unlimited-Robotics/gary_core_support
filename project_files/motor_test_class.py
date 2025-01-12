@@ -122,7 +122,7 @@ class motor_test_class(QObject):
     #move_direction: 0-down/open big, 1-down/open small, 2-stop, 3-up/close small, 4-up/close big.
     def move_step(self, motor_select, move_direction):
         motor_to_move = self.all_motors_object.step_motors_list[motor_select]
-        if ( "win" in platform):
+        if ("win" in platform):
             motor_to_move.can_selector = 0
 
         if move_direction == 0:
@@ -171,7 +171,7 @@ class motor_test_class(QObject):
         #
         # def make_write_pos_req(self, response):
 
-        self.send_can_message(message_to_send.arbitration_id, message_to_send.data, 0)#motor_to_move.can_selector)
+        self.send_can_message(message_to_send.arbitration_id, message_to_send.data, motor_to_move.can_selector)
 
 
 

@@ -70,7 +70,7 @@ class bottom_test_data(QObject):
                 self.test_results = "FAILED, ALL REQUESTS TIMED OUT, NO DATA RECEIVED FROM BOTTOM MICROCONTROLLER"
                 self.passfail = "FAIL"
             else:
-                self.test_results += "HAD SOME TIMEOUTS, TRY RUNNING THE TEST AGAIN"
+                self.test_results += "HAD SOME TIMEOUTS, TRY RUNNING THE TEST AGAIN AND VERIFY THAT THE MICROCONTROLLER CODE IS AT LEAST V_2.69"
 
         elif self.test_results == "THE FOLLOWING REGISTERS FAILED:   ":
             self.test_results = ""
