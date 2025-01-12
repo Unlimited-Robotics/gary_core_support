@@ -1,0 +1,17 @@
+save pyqt design into the pyqt_files folder as "qt_designer_save1.ui"
+
+
+to update from file save run:
+
+cd <git_repository_directory>\QC_helper_script
+python -m PyQt5.uic.pyuic -x pyqt_files/qt_designer_save1.ui -o project_files/qt_design1.py
+
+
+
+example for this:
+
+cd C:\Users\Owner\PycharmProjects\QC_git_folder\QC_helper_script
+python -m PyQt5.uic.pyuic -x pyqt_files/qt_designer_save1.ui -o project_files/qt_design1.py
+
+
+
