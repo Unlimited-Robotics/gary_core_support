@@ -42,6 +42,11 @@ class leds_class(QObject):
         self.green_slider.valueChanged.connect(lambda: self.update_color_from_slider(self.green_slider.value(), 1))
         self.blue_slider.valueChanged.connect(lambda: self.update_color_from_slider(self.blue_slider.value(), 2))
 
+        self.red_slider.setStyleSheet("QSlider::handle:horizontal {background-color: red;}");
+        self.green_slider.setStyleSheet("QSlider::handle:horizontal {background-color: green;}");
+        self.blue_slider.setStyleSheet("QSlider::handle:horizontal {background-color: blue;}");
+
+
         self.eye_select = 0xFF
         self.set_color(255, 0, 255) #set initial color
 

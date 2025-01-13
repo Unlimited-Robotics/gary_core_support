@@ -52,7 +52,7 @@ class nicla_test_data(QObject):
     def make_passfail(self):
         cnt = 0
         for delay in self.timing_history:
-            if (abs(delay-self.timing_average) >= MAX_TIMING_DIFF and delay > 8000):
+            if ((abs(delay-self.timing_average) >= MAX_TIMING_DIFF and delay > 7000) or self.timing_average > 5500):
                 print(delay)
                 cnt += 1
         if (self.timing_average == 0):

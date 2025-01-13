@@ -72,7 +72,7 @@ class top_test_data(QObject):
                 self.test_results = "HAD SOME TIMEOUTS, TRY RUNNING THE TEST AGAIN"
                 self.passfail = "FAIL"
 
-        if (existing_temp_cnt == 0):
+        elif (existing_temp_cnt == 0):
             self.test_results = "FAILED: found "+ str(existing_temp_cnt)+"/"+str(len(self.test_registers_list))+" possible temperature sensors."
             first = 1
             for found_index in found_indexes:
