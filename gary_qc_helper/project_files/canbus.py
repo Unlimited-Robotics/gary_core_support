@@ -124,6 +124,9 @@ class CANBusWorker(QObject):
                 self.bad_can_variables.canbus_good_label.setStyleSheet("color: green;")
                 time.sleep(1)
             self.bad_can_variables.main_widget.setCurrentIndex(0)
+            if (not "win" in platform):
+                self.bad_can_variables.general_messages_label.setStyleSheet("color: green;")
+                self.update_label(self.bad_can_variables.general_messages_label, "Both Canbus lines active")
             self.update_canstate_labels_signal.emit()
         if (self.can_running0 == 1 and "win" in platform and not self.force_can_page):
             if not(self.started_with_can_issue == 0):
@@ -343,7 +346,41 @@ class CANBusWorker(QObject):
                     return [0, data]  # Return the data for further processing.
         return [1, []]  # Fallback message if no data was found.
 
+    def manual_can_fetch_no_passive(self, request_message, reply_id, reply_first_byte, reply_second_byte, second_byte_enable, timeout, can_select):
+        if (can_select == 0 and self.can_running0 == 0):
+            return [1,[]]
+        if (can_select == 1 and self.can_running1 == 0):
+            can_select = 0
+        start_time = self.get_time_delta([0, 0, 0])[1]
 
+        time_send = self.get_time_delta(start_time)[1]
+
+        if (can_select == 0):
+            self.send_can_message(request_message.arbitration_id, request_message.data)
+        else:
+            self.send_can_message1(request_message.arbitration_id, request_message.data)
+        while self.get_time_delta(start_time)[0] < timeout:  # Process a limited number of iterations for testing
+            message = None
+            if (self.get_time_delta(time_send)[0] >= 2000):
+                time_send = self.get_time_delta(time_send)[1]
+                if (can_select == 0):
+                    self.send_can_message(request_message.arbitration_id,request_message.data)
+                else:
+                    self.send_can_message1(request_message.arbitration_id,request_message.data)
+            if (can_select == 0):
+                message = self.bus0.recv(0.1)  # Timeout in seconds.
+            else:
+                message = self.bus1.recv(0.1)  # Timeout in seconds.
+            if message is None:
+                continue  # No message received; try again.
+            # Process the message if it matches the desired arbitration ID
+            if message.arbitration_id == reply_id:
+                if message.data[0] == reply_first_byte:
+                    if (second_byte_enable and not (reply_second_byte == message.data[1])):
+                        continue
+                    data = message.data
+                    return [0, data]  # Return the data for further processing.
+        return [1, []]  # Fallback message if no data was found.
 
     def send_can_message_top(self, arbitration_id, data, can_selector):
         if (can_selector == 1):
