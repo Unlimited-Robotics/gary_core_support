@@ -160,6 +160,7 @@ class CANBusWorker(QObject):
                 if platform == "linux" or platform == "linux2" or platform == "unix":
                     bustype = 'socketcan'
                     self.bus1 = can.Bus(channel=channel, interface=bustype, baudrate=1000000)
+                    self.can_running1 = 1
                 elif "win" in platform:
                     self.update_label(self.bad_can_variables.general_messages_label, "NO CAN1 ON WINDOWS, no arms or linears available (relevant tests will run on can0)")
                 self.started_with_can_issue -= 1
@@ -258,16 +259,16 @@ class CANBusWorker(QObject):
                 continue  # No message received; try again.
 
             # Process the message if it matches the desired arbitration ID
-            # if (reg_id == 0):
-            #     expected_board_identifier = 0
-            #     if (device_id == 0x103):
-            #         expected_board_identifier = 0
-            #     elif (device_id == 0x104):
-            #         expected_board_identifier = 1
-            #     elif (device_id == 0x102):
-            #         expected_board_identifier = 2
-            #     if not(message.data[1] == expected_board_identifier):
-            #         continue
+            if (reg_id == 0):
+                expected_board_identifier = 0
+                if (device_id == 0x103):
+                    expected_board_identifier = 0
+                elif (device_id == 0x104):
+                    expected_board_identifier = 1
+                elif (device_id == 0x102):
+                    expected_board_identifier = 2
+                if not(message.data[1] == expected_board_identifier):
+                    continue
             if (message.arbitration_id == 0x105 and device_id > 0x100 and device_id < 0x106) or (message.arbitration_id == device_id and device_id > 0x106):
                 # print(message.data[0], reg_id)
                 if message.data[0] == reg_id:

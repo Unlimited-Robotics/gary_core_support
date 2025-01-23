@@ -86,7 +86,6 @@ class MainWindow(QMainWindow):
                                       self.ui.manual_head_leds_off, self.ui.manual_head_leds_wave, self.ui.manual_head_leds_eyes, self.ui.manual_head_leds_full,
                                       self.ui.manual_chest_leds_off, self.ui.manual_chest_leds_blink, self.ui.manual_chest_leds_loading, self.ui.manual_chest_leds_full,
                                       self.general_functions)
-
         self.physical_tests = physical_test_class(self.ui.test_relay_button, self.ui.test_relay_label,
                                                   self.ui.test_fan_button, self.ui.test_fan_label, self.general_functions)
 

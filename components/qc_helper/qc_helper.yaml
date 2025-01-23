@@ -1,0 +1,7 @@
+
+config: True
+idle: True
+
+src:
+  - gary_core_support
+

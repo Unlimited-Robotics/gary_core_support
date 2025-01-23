@@ -42,6 +42,12 @@ class leds_class(QObject):
         self.green_slider.valueChanged.connect(lambda: self.update_color_from_slider(self.green_slider.value(), 1))
         self.blue_slider.valueChanged.connect(lambda: self.update_color_from_slider(self.blue_slider.value(), 2))
 
+        self.red_slider.setStyleSheet("QSlider::handle:horizontal {background-color: red;}");
+        self.green_slider.setStyleSheet("QSlider::handle:horizontal {background-color: green;}");
+        self.blue_slider.setStyleSheet("QSlider::handle:horizontal {background-color: blue;}");
+
+
+        self.eye_select = 0xFF
         self.set_color(255, 0, 255) #set initial color
 
         self.button_white.clicked.connect(lambda: self.set_color(255,255,255))
@@ -53,14 +59,19 @@ class leds_class(QObject):
 
         self.head_off_button     .clicked.connect(lambda: self.send_leds(0, 0x00, 0x00, 0x00))
         self.head_wave_button    .clicked.connect(lambda: self.send_leds(0, 0x03, 0x00, 0x07))
-        self.head_eyes_button    .clicked.connect(lambda: self.send_leds(0, 0xFF, 0x04, 0x02))
+        self.head_eyes_button    .clicked.connect(lambda: self.send_eyes())
         self.head_full_button    .clicked.connect(lambda: self.send_leds(0, 0x01, 0x05, 0xFF))
         self.chest_off_button    .clicked.connect(lambda: self.send_leds(1, 0x00, 0x00, 0xFF))
         self.chest_blink_button  .clicked.connect(lambda: self.send_leds(1, 0x03, 0x00, 0x04))
         self.chest_loading_button.clicked.connect(lambda: self.send_leds(1, 0x0C, 0x00, 0x04))
         self.chest_full_button   .clicked.connect(lambda: self.send_leds(1, 0x0D, 0x00, 0xFF))
 
-
+    def send_eyes(self):
+        self.send_leds(0, self.eye_select, 0x04, 0x02)
+        if (self.eye_select == 0xFF):
+            self.eye_select = 0xF9
+        else:
+            self.eye_select = 0xFF
 
     def send_leds(self, head_chest_sel, motion_sel, reps, speed):
         if (head_chest_sel):
