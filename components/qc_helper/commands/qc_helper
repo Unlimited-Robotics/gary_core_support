@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec python3 /robot/src/gary_core_support/gary_qc_helper/project_files/main.py

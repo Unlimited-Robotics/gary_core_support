@@ -1,0 +1,8 @@
+
+config: True
+idle: True
+display: True
+
+src:
+  - gary_core_support
+
