@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>822</width>
-    <height>743</height>
+    <height>735</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>861</width>
-      <height>651</height>
+      <height>641</height>
      </rect>
     </property>
     <widget class="QWidget" name="page_running">
@@ -34,7 +34,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <widget class="QWidget" name="tests_page">
        <widget class="QStackedWidget" name="tests_stack_widget">
@@ -47,7 +47,7 @@
          </rect>
         </property>
         <property name="currentIndex">
-         <number>0</number>
+         <number>2</number>
         </property>
         <widget class="QWidget" name="microcontroller_tests_page">
          <widget class="QWidget" name="verticalLayoutWidget_7">
@@ -1364,8 +1364,8 @@
          <widget class="QLabel" name="states_passfail_empty">
           <property name="geometry">
            <rect>
-            <x>30</x>
-            <y>210</y>
+            <x>10</x>
+            <y>220</y>
             <width>375</width>
             <height>33</height>
            </rect>
@@ -1425,46 +1425,6 @@
             </layout>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5">
-             <item>
-              <widget class="QPushButton" name="states_wheels_61_off">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Wheels 6.1v OFF</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="states_wheels_61_on">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>40</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>Wheels 6.1v ON</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-           <item>
             <layout class="QHBoxLayout" name="horizontalLayout_58">
              <property name="sizeConstraint">
               <enum>QLayout::SetDefaultConstraint</enum>
@@ -1502,6 +1462,46 @@
                </property>
                <property name="text">
                 <string>Arms 6.1v ON</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <item>
+              <widget class="QPushButton" name="states_wheels_61_off">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Wheels 6.1v OFF</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="states_wheels_61_on">
+               <property name="maximumSize">
+                <size>
+                 <width>16777215</width>
+                 <height>40</height>
+                </size>
+               </property>
+               <property name="font">
+                <font>
+                 <pointsize>12</pointsize>
+                </font>
+               </property>
+               <property name="text">
+                <string>Wheels 6.1v ON</string>
                </property>
               </widget>
              </item>
@@ -3299,7 +3299,7 @@
     <property name="geometry">
      <rect>
       <x>720</x>
-      <y>650</y>
+      <y>640</y>
       <width>91</width>
       <height>31</height>
      </rect>
@@ -3335,7 +3335,7 @@
     <property name="geometry">
      <rect>
       <x>720</x>
-      <y>690</y>
+      <y>670</y>
       <width>91</width>
       <height>31</height>
      </rect>

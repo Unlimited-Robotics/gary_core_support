@@ -154,7 +154,7 @@ class MainWindow(QMainWindow):
 
     def send_can(self, arbitration_id, data):
         """Send CAN data through the worker."""
-        if self.worker_thread.isRunning():
+        if self.canbus_worker.running:
             self.canbus_worker.send_can_message(arbitration_id, data)
         else:
             print("CAN worker thread is not running.")
