@@ -2,6 +2,8 @@
 
 import sys
 import os
+import signal
+
 from sys import platform
 from qt_design1 import Ui_qt_designer_save1
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
@@ -20,7 +22,6 @@ from bad_can_page_variables import bad_can_variables_class
 
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtWidgets
-
 
 
 
@@ -509,9 +510,14 @@ class MainWindow(QMainWindow):
 
 
 
+def handle_sigint(signum, frame):
+    global window
+    window.exit()  # Gracefully exit the PyQt app
 
 
 if __name__ == "__main__":
+    global window
+    signal.signal(signal.SIGINT, handle_sigint)  # Set up signal handler
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

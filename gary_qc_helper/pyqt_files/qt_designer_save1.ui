@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>822</width>
-    <height>735</height>
+    <height>724</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,7 +20,7 @@
       <x>0</x>
       <y>0</y>
       <width>861</width>
-      <height>641</height>
+      <height>631</height>
      </rect>
     </property>
     <widget class="QWidget" name="page_running">
@@ -34,7 +34,7 @@
        </rect>
       </property>
       <property name="currentIndex">
-       <number>1</number>
+       <number>2</number>
       </property>
       <widget class="QWidget" name="tests_page">
        <widget class="QStackedWidget" name="tests_stack_widget">
@@ -1823,7 +1823,7 @@
         <property name="geometry">
          <rect>
           <x>20</x>
-          <y>449</y>
+          <y>440</y>
           <width>761</width>
           <height>121</height>
          </rect>
@@ -2004,7 +2004,7 @@
         <property name="geometry">
          <rect>
           <x>0</x>
-          <y>510</y>
+          <y>490</y>
           <width>801</width>
           <height>61</height>
          </rect>
@@ -3096,8 +3096,8 @@
      <widget class="QWidget" name="horizontalLayoutWidget_50">
       <property name="geometry">
        <rect>
-        <x>11</x>
-        <y>580</y>
+        <x>10</x>
+        <y>570</y>
         <width>801</width>
         <height>61</height>
        </rect>
@@ -3281,7 +3281,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>650</y>
+      <y>630</y>
       <width>691</width>
       <height>31</height>
      </rect>
@@ -3298,9 +3298,9 @@
    <widget class="QPushButton" name="canbus_states_button">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>640</y>
-      <width>91</width>
+      <x>710</x>
+      <y>630</y>
+      <width>111</width>
       <height>31</height>
      </rect>
     </property>
@@ -3317,7 +3317,7 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>680</y>
+      <y>660</y>
       <width>691</width>
       <height>31</height>
      </rect>
@@ -3334,10 +3334,10 @@
    <widget class="QPushButton" name="exit_button">
     <property name="geometry">
      <rect>
-      <x>720</x>
-      <y>670</y>
-      <width>91</width>
-      <height>31</height>
+      <x>710</x>
+      <y>660</y>
+      <width>111</width>
+      <height>41</height>
      </rect>
     </property>
     <property name="font">

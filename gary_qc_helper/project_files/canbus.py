@@ -228,13 +228,22 @@ class CANBusWorker(QObject):
             print("test not yet created, crashing now ;) ...")
             crashvar = self.test_entries[1000]
 
-
-
-
-
-
-
-
+    def empty_canbus(self):
+        rcv = 1
+        cnt = 0
+        if self.can_running0:
+            while True:
+                cnt+= 1
+                msg = self.bus0.recv(timeout=0)  # Non-blocking call
+                if msg is None:
+                    break
+        if self.can_running1:
+            cnt = 0
+            while True:
+                cnt+= 1
+                msg = self.bus1.recv(timeout=0)  # Non-blocking call
+                if msg is None:
+                    break
 
     def finish_test(self):
         self.test_finished = 5
@@ -304,21 +313,26 @@ class CANBusWorker(QObject):
             return [1,[]]
         if (can_select == 1 and self.can_running1 == 0):
             can_select = 0
+        self.empty_canbus()
+
         start_time = self.get_time_delta([0, 0, 0])[1]
         while self.get_time_delta(start_time)[0] < timeout:  # Process a limited number of iterations for testing
             # print("receive")
             message = None
             if (can_select == 0):
-                message = self.bus0.recv(0.1)  # Timeout in seconds.
+                message = self.bus0.recv(0.001)  # Timeout in seconds.
             else:
-                message = self.bus1.recv(0.1)  # Timeout in seconds.
+                message = self.bus1.recv(0.001)  # Timeout in seconds.
             if message is None:
                 continue  # No message received; try again.
             # Process the message if it matches the desired arbitration ID
             if message.arbitration_id == reply_id:
                 if message.data[0] == reply_first_byte:
-                    data = message.data
-                    return [0, data]  # Return the data for further processing.
+                    for data_idx in range(1, len(message.data)):
+                        if not message.data[data_idx] == 0:
+                            data = message.data
+                            time.sleep(0.1)
+                            return [0, data]  # Return the data for further processing.
         time_send = self.get_time_delta(start_time)[1]
 
         if (can_select == 0):
@@ -334,16 +348,18 @@ class CANBusWorker(QObject):
                 else:
                     self.send_can_message1(request_message.arbitration_id,request_message.data)
             if (can_select == 0):
-                message = self.bus0.recv(0.1)  # Timeout in seconds.
+                message = self.bus0.recv(0.001)  # Timeout in seconds.
             else:
-                message = self.bus1.recv(0.1)  # Timeout in seconds.
+                message = self.bus1.recv(0.001)  # Timeout in seconds.
             if message is None:
                 continue  # No message received; try again.
             # Process the message if it matches the desired arbitration ID
             if message.arbitration_id == reply_id:
                 if message.data[0] == reply_first_byte:
-                    data = message.data
-                    return [0, data]  # Return the data for further processing.
+                    for data_idx in range(1, len(message.data)):
+                        if not message.data[data_idx] == 0:
+                            data = message.data
+                            return [0, data]  # Return the data for further processing.
         return [1, []]  # Fallback message if no data was found.
 
     def manual_can_fetch_no_passive(self, request_message, reply_id, reply_first_byte, reply_second_byte, second_byte_enable, timeout, can_select):
