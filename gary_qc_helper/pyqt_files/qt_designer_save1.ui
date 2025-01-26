@@ -231,48 +231,6 @@
              </item>
             </layout>
            </item>
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_59">
-             <item>
-              <widget class="QPushButton" name="test_emergency">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="minimumSize">
-                <size>
-                 <width>0</width>
-                 <height>0</height>
-                </size>
-               </property>
-               <property name="font">
-                <font>
-                 <pointsize>12</pointsize>
-                </font>
-               </property>
-               <property name="text">
-                <string>           test emergency       </string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="test_emergency_data">
-               <property name="text">
-                <string>error results</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="test_emergency_passfail">
-               <property name="text">
-                <string>FAIL</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
           </layout>
          </widget>
         </widget>

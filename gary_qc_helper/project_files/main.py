@@ -1,6 +1,7 @@
 
 
 import sys
+import os
 from sys import platform
 from qt_design1 import Ui_qt_designer_save1
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
@@ -495,6 +496,7 @@ class MainWindow(QMainWindow):
                     border-radius: 5px;}}
                 """)
     def exit(self):
+        print("exiting...")
         try:
             self.canbus_worker.bus0.shutdown()
             self.canbus_worker.bus1.shutdown()
