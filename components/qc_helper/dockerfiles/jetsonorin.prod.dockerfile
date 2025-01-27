@@ -1,0 +1,23 @@
+ARG FROM
+
+#### PRODUCTION Stage
+
+FROM ${FROM} AS production
+
+ARG REPO_METADATA
+ARG COMPONENT_METADATA
+ARG REPO_NAME
+ARG COMPONENT_NAME
+
+# Copy ROS Packages
+COPY /${REPO_NAME} /robot/src/${REPO_NAME}
+
+# Copy Commands
+COPY /${REPO_NAME}/components/${COMPONENT_NAME}/commands /robot/commands
+COPY /${REPO_NAME}/components/${COMPONENT_NAME}/component_static_data /robot/component_static_data
+
+# Labels
+LABEL REPO_NAME=${REPO_NAME}
+LABEL COMPONENT_NAME=${COMPONENT_NAME}
+LABEL REPO_METADATA=${REPO_METADATA}
+LABEL COMPONENT_METADATA=${COMPONENT_METADATA}
