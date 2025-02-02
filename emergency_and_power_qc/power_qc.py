@@ -776,7 +776,7 @@ def handle_keyboard_input():
 try:
     # Create and start threads
     print("stopping status engine\n")
-    os.system("cd /opt/ur/gary ; docker stop gary_core_status.status_engine")
+    os.system("cd /opt/ur/gary ; docker stop gary-status_engine-1")
     print("\n")
     time.sleep(1)
     read_thread = threading.Thread(target=read_from_uart)
