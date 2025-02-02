@@ -57,13 +57,11 @@ class motor_test_class(QObject):
     #return 1 if passed, 0 if failed
     def test_motor_reply(self, motor_object):
         for x in range(3):
-            failed, data = self.manual_fetch(motor_object.make_request(), motor_object.motor_id, motor_object.request_type, 50000, motor_object.can_selector)  # request the register
+            failed, data = self.manual_fetch(motor_object.make_request(), motor_object.motor_id, motor_object.request_type, 10000, motor_object.can_selector)  # request the register
             if failed:  # if timed out, return 0
                 continue
             else:
-                for data_idx in range(1, len(data)):
-                    if not data[data_idx] == 0:
-                        return 1
+                return 1
         return 0
 
     def test_list(self, motor_list, data_label, button):

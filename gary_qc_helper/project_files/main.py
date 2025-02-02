@@ -1,6 +1,9 @@
 
 
 import sys
+import os
+import signal
+
 from sys import platform
 from qt_design1 import Ui_qt_designer_save1
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow
@@ -12,13 +15,13 @@ from all_motors_class_def import all_motor_class
 from motor_test_class import motor_test_class
 from leds_class_def import leds_class
 from physical_test_class_def import physical_test_class
+from always_on_test_class_def import always_on_test_class
 
 from all_data_entries import all_data_entries_class
 from bad_can_page_variables import bad_can_variables_class
 
 from PyQt5.QtCore import QObject, QThread, pyqtSignal
 from PyQt5 import QtWidgets
-
 
 
 
@@ -32,15 +35,8 @@ class MainWindow(QMainWindow):
 
         # Signal from CANBusWorker
 
+        self.serial_message_to_send = 0
 
-
-        # self.ui.pushButton_5.clicked.connect(lambda: self.prev_page(self.ui.stackedWidget_2))
-        # self.ui.pushButton_6.clicked.connect(lambda: self.next_page(self.ui.stackedWidget_2))
-
-        # Connect buttons to switch pages
-        #self.label1_entry = data_entry(self.ui.label, "buttons", 'binary', 0x104, 0x52, self.update_label, 0, 0)
-        # self.label2_entry = data_entry(self.ui.label_2, "voltage(2s)", '2s compliment', 0x104, 0x1F, self.update_label)
-        # self.label3_entry = data_entry(self.ui.label_3, "pct", 'decimal', 0x104, 0x22, self.update_label, 1, 100)
 
         # connect buttons to their functions
         self.define_buttons()
@@ -75,7 +71,8 @@ class MainWindow(QMainWindow):
                                   self.manual_can_fetch_main,
                                   self.get_can_state,
                                   self.update_canstate_labels,
-                                  self.color_selected_menu_buttons]
+                                  self.color_selected_menu_buttons,
+                                  self.manual_can_fetch_no_passive_main]
 
 
         self.all_motors = all_motor_class()
@@ -99,17 +96,32 @@ class MainWindow(QMainWindow):
 
         self.bad_can_vars = bad_can_variables_class(self.ui.general_messages_label, self.ui.can0_status_label, self.ui.can0_connect_button, self.ui.can1_status_label, self.ui.can1_connect_button, self.ui.canbus_good_label, self.ui.canbus_continue, self.ui.stackedWidget_main)
         # Start the CAN bus worker
-        self.worker_thread = QThread()
-        self.canbus_worker = CANBusWorker(self.get_current_page, self.get_current_subpage, self.get_current_test, self.all_registers.data_entries, self.test_variables, self.update_button_color_running, self.bad_can_vars, self.update_canstate_labels)
+        self.worker_thread1 = QThread()
+        self.worker_thread2 = QThread()
+
+        self.canbus_worker = CANBusWorker(
+            self.get_current_page,
+            self.get_current_subpage,
+            self.get_current_test,
+            self.all_registers.data_entries,
+            self.test_variables,
+            self.update_button_color_running,
+            self.bad_can_vars,
+            self.update_canstate_labels
+        )
 
 
+        # Move each worker to its own thread
+        self.canbus_worker.moveToThread(self.worker_thread1)
 
-        self.canbus_worker.moveToThread(self.worker_thread)
+        # Connect signals for the first worker
+        self.worker_thread1.started.connect(self.canbus_worker.run)
+        self.destroyed.connect(self.worker_thread1.quit)
+        self.destroyed.connect(self.worker_thread1.wait)
 
-        # Connect CANBusWorker signals
 
-        self.worker_thread.started.connect(self.canbus_worker.run)
-        self.worker_thread.start()
+        # Start the threads
+        self.worker_thread1.start()
 
         # Clean up when the application closes
         self.destroyed.connect(self.cleanup)
@@ -143,7 +155,7 @@ class MainWindow(QMainWindow):
 
     def send_can(self, arbitration_id, data):
         """Send CAN data through the worker."""
-        if self.worker_thread.isRunning():
+        if self.canbus_worker.running:
             self.canbus_worker.send_can_message(arbitration_id, data)
         else:
             print("CAN worker thread is not running.")
@@ -332,8 +344,9 @@ class MainWindow(QMainWindow):
         self.ui.tests_page_microcontrollers_button.clicked.connect(lambda: self.change_page(self.ui.tests_stack_widget, 0))
         self.ui.tests_page_physical_button.clicked.connect(lambda: self.change_page(self.ui.tests_stack_widget, 2))
 
-        #canbus button
+        #extra buttons
         self.ui.canbus_states_button.clicked.connect(lambda: self.force_retry_can())
+        self.ui.exit_button.clicked.connect(lambda: self.exit())
 
         #manual control buttons
         self.ui.manual_page_leds_select.clicked.connect(lambda: self.change_page(self.ui.manual_control_stack, 0))
@@ -350,6 +363,8 @@ class MainWindow(QMainWindow):
         self.ui.test_right_arm.clicked.connect(lambda: self.set_test(6))
         self.ui.test_relay_button.clicked.connect(lambda: self.set_test(7))
         self.ui.test_fan_button.clicked.connect(lambda: self.set_test(8))
+        self.ui.test_always.clicked.connect(lambda: self.set_test(9))
+
         self.ui.tests_motors_arms_61_on.clicked.connect(lambda: self.send_can(0x103, [0x4D, 0x50, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00]))
         self.ui.tests_motors_arms_61_off.clicked.connect(lambda: self.send_can(0x103, [0x4D, 0x50, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]))
         self.ui.tests_motors_wheels_61_on.clicked.connect(lambda: self.send_can(0x104, [0x4D, 0x50, 0xFF, 0x00, 0x00, 0x00, 0x00, 0x00]))
@@ -425,6 +440,10 @@ class MainWindow(QMainWindow):
     def manual_can_fetch_main (self, request_message, reply_id, reply_first_byte, timeout, can_select):
         return self.canbus_worker.manual_can_fetch(request_message, reply_id, reply_first_byte, timeout, can_select)
 
+    def manual_can_fetch_no_passive_main (self, request_message, reply_id, reply_first_byte, reply_second_byte, second_byte_enable, timeout, can_select):
+        return self.canbus_worker.manual_can_fetch_no_passive(request_message, reply_id, reply_first_byte, reply_second_byte, second_byte_enable, timeout, can_select)
+
+
     def make_tests(self):
         self.nicla_test_object = nicla_test_data( self.ui.test_nicla_communications_passfail, self.ui.test_nicla_communications_data, self.ui.test_nicla_communications, self.general_functions)
         self.bottom_test_object = bottom_test_data(self.all_registers.label_srftemp_srf1, self.all_registers.label_srftemp_srf2, self.all_registers.label_bat_percentage, self.all_registers.label_bat_voltage, self.all_registers.label_bat_error_count, self.ui.test_bottom_uc_data, self.ui.test_bottom_uc_passfail, self.ui.test_bottom_uc, self.general_functions)
@@ -434,6 +453,7 @@ class MainWindow(QMainWindow):
                                                   self.ui.test_right_arm_data, self.ui.test_right_arm,
                                                   self.ui.test_left_arm_data, self.ui.test_left_arm,
                                                   self.general_functions, self.ui.general_messages_label_2)
+        self.always_on_test_object = always_on_test_class(self.ui.test_always, self.ui.test_always_data, self.ui.test_always_passfail, self.general_functions)
 
 
 
@@ -447,7 +467,8 @@ class MainWindow(QMainWindow):
             5: [self.motor_test_object, 1],
             6: [self.motor_test_object, 2],
             7: [self.physical_tests, 0],
-            8: [self.physical_tests, 1]
+            8: [self.physical_tests, 1],
+            9: [self.always_on_test_object,0]
 
             # 2: [wheel_test_object]
         }
@@ -475,11 +496,28 @@ class MainWindow(QMainWindow):
                     border: 1px  solid gray;
                     border-radius: 5px;}}
                 """)
+    def exit(self):
+        print("exiting...")
+        try:
+            self.canbus_worker.bus0.shutdown()
+            self.canbus_worker.bus1.shutdown()
+        except:
+            pass
+        self.canbus_worker.stop()
+        exit()
+        self.destroyed.connect(self.cleanup)
+        sys.exit(self.exec_())
 
 
+
+def handle_sigint(signum, frame):
+    global window
+    window.exit()  # Gracefully exit the PyQt app
 
 
 if __name__ == "__main__":
+    global window
+    signal.signal(signal.SIGINT, handle_sigint)  # Set up signal handler
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()
