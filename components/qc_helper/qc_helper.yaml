@@ -1,6 +1,6 @@
 
-config: True
 idle: True
+config: True
 
 src:
   - gary_core_support
