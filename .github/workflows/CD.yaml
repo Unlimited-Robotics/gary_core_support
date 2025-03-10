@@ -1,0 +1,9 @@
+name: Continuous Deployment
+
+on:
+  workflow_dispatch
+
+jobs:
+  call-cd-workflow:
+    uses: Unlimited-Robotics/raya_deployment/.github/workflows/CD.yaml@main
+    secrets: inherit
