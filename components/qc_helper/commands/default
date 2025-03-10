@@ -1,4 +1,3 @@
 #!/bin/bash
 
-export THIS_MAIN_LAUNCHFILE=True
-exec /robot/commands/qc_helper
+#exec /robot/commands/qc_helper

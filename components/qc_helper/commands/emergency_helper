@@ -1,4 +1,3 @@
 #!/bin/bash
 
-export DISPLAY=:0
 exec python3 /robot/src/gary_core_support/emergency_and_power_qc/power_qc.py

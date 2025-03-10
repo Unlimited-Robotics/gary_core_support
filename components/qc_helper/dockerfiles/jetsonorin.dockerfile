@@ -2,7 +2,6 @@ ARG REGISTRY_ENDPOINT
 FROM ${REGISTRY_ENDPOINT}/raya.core.base_images.ros_humble:jetsonorin.4.17.beta
 
 ENV DEBIAN_FRONTEND=noninteractive
-ENV DISPLAY=:0
 
 
 # Install dependencies and Python packages
